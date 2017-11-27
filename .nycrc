@@ -1,0 +1,19 @@
+{
+    "check-coverage": true,
+    "extension": [
+        ".ts"
+    ],
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "**/*.spec.ts",
+        "src/app/routes/**/*.ts"
+    ],
+    "reporter": [
+        "lcov",
+        "text-lcov",
+        "text-summary"
+    ],
+    "all": true
+}
