@@ -3,14 +3,6 @@
  * 決済取引ルーター
  * @ignore
  */
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const middlewares = require("@motionpicture/express-middleware");
 const express_1 = require("express");
@@ -54,17 +46,17 @@ const rateLimit4transaction = middlewares.rateLimit({
 transactionRouter.post('/EntryTran.idPass', (req, __, next) => {
     req.checkBody('ShopID').notEmpty();
     next();
-}, validator_1.default, rateLimit4transaction, (__, res) => __awaiter(this, void 0, void 0, function* () {
+}, validator_1.default, rateLimit4transaction, (__, res) => {
     const result = {
         AccessID: '5fbdad39a6067335152f847868b01ee9',
         AccessPass: 'e57d4aa4ea2d157283414ef572acf178'
     };
     res.status(http_status_1.OK).type('text/plain').send(querystring.stringify(result));
-}));
+});
 /**
  * 決済実行
  */
-transactionRouter.post('/ExecTran.idPass', rateLimit4transaction, (__, res) => __awaiter(this, void 0, void 0, function* () {
+transactionRouter.post('/ExecTran.idPass', (__, res) => {
     const result = {
         ACS: '0',
         OrderID: '1511764732893',
@@ -80,14 +72,14 @@ transactionRouter.post('/ExecTran.idPass', rateLimit4transaction, (__, res) => _
         ClientField3: ''
     };
     res.status(http_status_1.OK).send(querystring.stringify(result));
-}));
+});
 /**
  * 決済変更
  */
 transactionRouter.post('/AlterTran.idPass', (req, __, next) => {
     req.checkBody('ShopID').notEmpty();
     next();
-}, validator_1.default, rateLimit4transaction, (__, res) => __awaiter(this, void 0, void 0, function* () {
+}, validator_1.default, rateLimit4transaction, (__, res) => {
     const result = {
         AccessID: '4b59530d25ccdf51cb3795a86fd68097',
         AccessPass: '4df804a0602ab51229fae24826c7ed3e',
@@ -97,14 +89,14 @@ transactionRouter.post('/AlterTran.idPass', (req, __, next) => {
         TranDate: '20171127153855'
     };
     res.status(http_status_1.OK).send(querystring.stringify(result));
-}));
+});
 /**
  * 金額変更
  */
 transactionRouter.post('/ChangeTran.idPass', (req, __, next) => {
     req.checkBody('ShopID').notEmpty();
     next();
-}, validator_1.default, rateLimit4transaction, (__, res) => __awaiter(this, void 0, void 0, function* () {
+}, validator_1.default, rateLimit4transaction, (__, res) => {
     const result = {
         AccessID: 'f9f867a630c2e5651a3888340cfea97a',
         AccessPass: '4cfcd63255040a6bfaf72a2590202f08',
@@ -114,5 +106,5 @@ transactionRouter.post('/ChangeTran.idPass', (req, __, next) => {
         TranDate: '20171127163500'
     };
     res.status(http_status_1.OK).send(querystring.stringify(result));
-}));
+});
 exports.default = transactionRouter;

@@ -82,9 +82,9 @@ jobs:
             echo "env_variables:" >> ./app.yaml
             echo "  NODE_ENV: 'development'" >> ./app.yaml
             echo "  NPM_TOKEN: '${NPM_TOKEN}'" >> ./app.yaml
-            echo "  REDIS_HOST: '${REDIS_HOST_DEVELOPMENT}'" >> ./app.yaml
-            echo "  REDIS_PORT: ${REDIS_PORT_DEVELOPMENT}" >> ./app.yaml
-            echo "  REDIS_KEY: '${REDIS_KEY_DEVELOPMENT}'" >> ./app.yaml
+            echo "  RATE_LIMIT_REDIS_HOST: '${RATE_LIMIT_REDIS_HOST}'" >> ./app.yaml
+            echo "  RATE_LIMIT_REDIS_PORT: ${RATE_LIMIT_REDIS_PORT}" >> ./app.yaml
+            echo "  RATE_LIMIT_REDIS_KEY: '${RATE_LIMIT_REDIS_KEY}'" >> ./app.yaml
       - run:
           name: List files
           command: ls -la

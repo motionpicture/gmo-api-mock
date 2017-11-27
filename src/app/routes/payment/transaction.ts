@@ -56,7 +56,7 @@ transactionRouter.post(
     },
     validator,
     rateLimit4transaction,
-    async (__, res) => {
+    (__, res) => {
         const result = {
             AccessID: '5fbdad39a6067335152f847868b01ee9',
             AccessPass: 'e57d4aa4ea2d157283414ef572acf178'
@@ -70,8 +70,7 @@ transactionRouter.post(
  */
 transactionRouter.post(
     '/ExecTran.idPass',
-    rateLimit4transaction,
-    async (__, res) => {
+    (__, res) => {
         const result = {
             ACS: '0',
             OrderID: '1511764732893',
@@ -102,7 +101,7 @@ transactionRouter.post(
     },
     validator,
     rateLimit4transaction,
-    async (__, res) => {
+    (__, res) => {
         const result = {
             AccessID: '4b59530d25ccdf51cb3795a86fd68097',
             AccessPass: '4df804a0602ab51229fae24826c7ed3e',
@@ -127,7 +126,7 @@ transactionRouter.post(
     },
     validator,
     rateLimit4transaction,
-    async (__, res) => {
+    (__, res) => {
         const result = {
             AccessID: 'f9f867a630c2e5651a3888340cfea97a',
             AccessPass: '4cfcd63255040a6bfaf72a2590202f08',
