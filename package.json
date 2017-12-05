@@ -9,7 +9,7 @@
     }
   ],
   "dependencies": {
-    "@motionpicture/express-middleware": "0.0.0-alpha.0",
+    "@motionpicture/express-middleware": "0.0.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "debug": "^3.1.0",
@@ -18,7 +18,7 @@
     "helmet": "^3.9.0",
     "http-status": "^1.0.1",
     "ioredis": "^3.2.1",
-    "moment": "^2.19.2"
+    "moment": "^2.19.3"
   },
   "description": "GMO Payment Gateway mock API",
   "devDependencies": {
