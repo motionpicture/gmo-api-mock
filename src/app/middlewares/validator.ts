@@ -14,6 +14,8 @@ const debug = createDebug('gmo-api-mock:middlewares:validator');
 
 export default async (req: Request, res: Response, next: NextFunction) => {
     const validatorResult = await req.getValidationResult();
+    // tslint:disable-next-line:no-single-line-block-comment
+    /* istanbul ignore next */
     if (!validatorResult.isEmpty()) {
         // const errors = validatorResult.array().map((mappedRrror) => {
         //     return new sskts.factory.errors.Argument(mappedRrror.param, mappedRrror.msg);

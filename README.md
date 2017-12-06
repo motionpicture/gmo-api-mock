@@ -30,13 +30,16 @@ node.js application
 
 ### Environment variables
 
-| Name                    | Required | Value          | Purpose             |
-| ----------------------- | -------- | -------------- | ------------------- |
-| `DEBUG`                 | false    | gmo-api-mock:* | Debug               |
-| `NODE_ENV`              | true     |                | 許可証暗号化の秘密鍵 |
-| `RATE_LIMIT_REDIS_HOST` | true     |                | Redis Cache接続ホスト  |
-| `RATE_LIMIT_REDIS_PORT` | true     |                | Redis Cache接続ポート  |
-| `RATE_LIMIT_REDIS_KEY`  | true     |                | Redis Cache接続キー   |
+| Name                                     | Required | Value          | Purpose                 |
+| ---------------------------------------- | -------- | -------------- | ----------------------- |
+| `DEBUG`                                  | false    | gmo-api-mock:* | Debug                   |
+| `NODE_ENV`                               | true     |                | 許可証暗号化の秘密鍵     |
+| `RATE_LIMIT_REDIS_HOST`                  | true     |                | Redis Cache接続ホスト      |
+| `RATE_LIMIT_REDIS_PORT`                  | true     |                | Redis Cache接続ポート      |
+| `RATE_LIMIT_REDIS_KEY`                   | true     |                | Redis Cache接続キー       |
+| `CREDIT_CARD_RATE_LIMIT_UNIT_IN_SECONDS` | true     |                | クレジットカードレート制限単位(秒) |
+| `CREDIT_CARD_RATE_LIMIT_THRESHOLD`       | true     |                | クレジットカードレート制限閾値     |
+
 
 ## Jsdoc
 

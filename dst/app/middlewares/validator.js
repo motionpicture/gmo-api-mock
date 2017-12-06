@@ -19,6 +19,8 @@ const querystring = require("querystring");
 const debug = createDebug('gmo-api-mock:middlewares:validator');
 exports.default = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     const validatorResult = yield req.getValidationResult();
+    // tslint:disable-next-line:no-single-line-block-comment
+    /* istanbul ignore next */
     if (!validatorResult.isEmpty()) {
         // const errors = validatorResult.array().map((mappedRrror) => {
         //     return new sskts.factory.errors.Argument(mappedRrror.param, mappedRrror.msg);

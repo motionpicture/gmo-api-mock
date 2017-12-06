@@ -12,14 +12,14 @@ const querystring = require("querystring");
 const validator_1 = require("../../middlewares/validator");
 const transactionRouter = express_1.Router();
 // tslint:disable-next-line:no-magic-numbers
-const AGGREGATION_UNIT_IN_SECONDS = 1;
+const AGGREGATION_UNIT_IN_SECONDS = parseInt(process.env.CREDIT_CARD_RATE_LIMIT_UNIT_IN_SECONDS, 10);
 // tslint:disable-next-line:no-magic-numbers
-const THRESHOLD = 3;
+const THRESHOLD = parseInt(process.env.CREDIT_CARD_RATE_LIMIT_THRESHOLD, 10);
 /**
  * 決済トランザクションのレート制限ミドルウェア
  * @const
  */
-const rateLimit4transaction = middlewares.rateLimit({
+const rateLimit = middlewares.rateLimit({
     redisClient: new redis({
         host: process.env.RATE_LIMIT_REDIS_HOST,
         // tslint:disable-next-line:no-magic-numbers
@@ -30,15 +30,16 @@ const rateLimit4transaction = middlewares.rateLimit({
     threshold: THRESHOLD,
     // 制限超過時の動作をカスタマイズ
     limitExceededHandler: (__0, __1, res) => {
-        res.setHeader('Retry-After', AGGREGATION_UNIT_IN_SECONDS);
+        // GMOは、レート制限を超えてもステータスコード200を返す
         const result = {
             ErrCode: 'E92',
             ErrInfo: 'E92000001'
         };
-        res.status(http_status_1.TOO_MANY_REQUESTS).send(querystring.stringify(result));
+        res.status(http_status_1.OK).send(querystring.stringify(result));
     },
     // スコープ生成ロジックをカスタマイズ
-    scopeGenerator: (req) => `transaction.${req.body.ShopID}`
+    // scopeGenerator: (req) => `transaction.${req.body.ShopID}`
+    scopeGenerator: () => 'creditCard'
 });
 /**
  * 取引登録
@@ -46,7 +47,7 @@ const rateLimit4transaction = middlewares.rateLimit({
 transactionRouter.post('/EntryTran.idPass', (req, __, next) => {
     req.checkBody('ShopID').notEmpty();
     next();
-}, validator_1.default, rateLimit4transaction, (__, res) => {
+}, validator_1.default, rateLimit, (__, res) => {
     const result = {
         AccessID: '5fbdad39a6067335152f847868b01ee9',
         AccessPass: 'e57d4aa4ea2d157283414ef572acf178'
@@ -56,7 +57,7 @@ transactionRouter.post('/EntryTran.idPass', (req, __, next) => {
 /**
  * 決済実行
  */
-transactionRouter.post('/ExecTran.idPass', (__, res) => {
+transactionRouter.post('/ExecTran.idPass', rateLimit, (__, res) => {
     const result = {
         ACS: '0',
         OrderID: '1511764732893',
@@ -79,7 +80,7 @@ transactionRouter.post('/ExecTran.idPass', (__, res) => {
 transactionRouter.post('/AlterTran.idPass', (req, __, next) => {
     req.checkBody('ShopID').notEmpty();
     next();
-}, validator_1.default, rateLimit4transaction, (__, res) => {
+}, validator_1.default, rateLimit, (__, res) => {
     const result = {
         AccessID: '4b59530d25ccdf51cb3795a86fd68097',
         AccessPass: '4df804a0602ab51229fae24826c7ed3e',
@@ -96,7 +97,7 @@ transactionRouter.post('/AlterTran.idPass', (req, __, next) => {
 transactionRouter.post('/ChangeTran.idPass', (req, __, next) => {
     req.checkBody('ShopID').notEmpty();
     next();
-}, validator_1.default, rateLimit4transaction, (__, res) => {
+}, validator_1.default, rateLimit, (__, res) => {
     const result = {
         AccessID: 'f9f867a630c2e5651a3888340cfea97a',
         AccessPass: '4cfcd63255040a6bfaf72a2590202f08',

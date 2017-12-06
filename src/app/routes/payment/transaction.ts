@@ -5,7 +5,7 @@
 
 import * as middlewares from '@motionpicture/express-middleware';
 import { Router } from 'express';
-import { OK, TOO_MANY_REQUESTS } from 'http-status';
+import { OK } from 'http-status';
 import * as redis from 'ioredis';
 import * as querystring from 'querystring';
 
@@ -14,14 +14,14 @@ import validator from '../../middlewares/validator';
 const transactionRouter = Router();
 
 // tslint:disable-next-line:no-magic-numbers
-const AGGREGATION_UNIT_IN_SECONDS = 1;
+const AGGREGATION_UNIT_IN_SECONDS = parseInt(<string>process.env.CREDIT_CARD_RATE_LIMIT_UNIT_IN_SECONDS, 10);
 // tslint:disable-next-line:no-magic-numbers
-const THRESHOLD = 3;
+const THRESHOLD = parseInt(<string>process.env.CREDIT_CARD_RATE_LIMIT_THRESHOLD, 10);
 /**
  * 決済トランザクションのレート制限ミドルウェア
  * @const
  */
-const rateLimit4transaction =
+const rateLimit =
     middlewares.rateLimit({
         redisClient: new redis({
             host: <string>process.env.RATE_LIMIT_REDIS_HOST,
@@ -33,15 +33,16 @@ const rateLimit4transaction =
         threshold: THRESHOLD,
         // 制限超過時の動作をカスタマイズ
         limitExceededHandler: (__0, __1, res) => {
-            res.setHeader('Retry-After', AGGREGATION_UNIT_IN_SECONDS);
+            // GMOは、レート制限を超えてもステータスコード200を返す
             const result = {
                 ErrCode: 'E92',
                 ErrInfo: 'E92000001'
             };
-            res.status(TOO_MANY_REQUESTS).send(querystring.stringify(result));
+            res.status(OK).send(querystring.stringify(result));
         },
         // スコープ生成ロジックをカスタマイズ
-        scopeGenerator: (req) => `transaction.${req.body.ShopID}`
+        // scopeGenerator: (req) => `transaction.${req.body.ShopID}`
+        scopeGenerator: () => 'creditCard'
     });
 
 /**
@@ -55,7 +56,7 @@ transactionRouter.post(
         next();
     },
     validator,
-    rateLimit4transaction,
+    rateLimit,
     (__, res) => {
         const result = {
             AccessID: '5fbdad39a6067335152f847868b01ee9',
@@ -70,6 +71,7 @@ transactionRouter.post(
  */
 transactionRouter.post(
     '/ExecTran.idPass',
+    rateLimit,
     (__, res) => {
         const result = {
             ACS: '0',
@@ -100,7 +102,7 @@ transactionRouter.post(
         next();
     },
     validator,
-    rateLimit4transaction,
+    rateLimit,
     (__, res) => {
         const result = {
             AccessID: '4b59530d25ccdf51cb3795a86fd68097',
@@ -125,7 +127,7 @@ transactionRouter.post(
         next();
     },
     validator,
-    rateLimit4transaction,
+    rateLimit,
     (__, res) => {
         const result = {
             AccessID: 'f9f867a630c2e5651a3888340cfea97a',
