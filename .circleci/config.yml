@@ -85,6 +85,8 @@ jobs:
             echo "  RATE_LIMIT_REDIS_HOST: '${RATE_LIMIT_REDIS_HOST}'" >> ./app.yaml
             echo "  RATE_LIMIT_REDIS_PORT: ${RATE_LIMIT_REDIS_PORT}" >> ./app.yaml
             echo "  RATE_LIMIT_REDIS_KEY: '${RATE_LIMIT_REDIS_KEY}'" >> ./app.yaml
+            echo "  CREDIT_CARD_RATE_LIMIT_UNIT_IN_SECONDS: '${CREDIT_CARD_RATE_LIMIT_UNIT_IN_SECONDS}'" >> ./app.yaml
+            echo "  CREDIT_CARD_RATE_LIMIT_THRESHOLD: '${CREDIT_CARD_RATE_LIMIT_THRESHOLD}'" >> ./app.yaml
       - run:
           name: List files
           command: ls -la
